@@ -21,7 +21,7 @@ suspeitosRoutes.post("/", (req, res) => {
         })
     }
     //Validação do campo de nível de suspeita
-    if (nivelSuspeita !== "baixo" || nivelSuspeita !== "médio" || nivelSuspeita !== "alto"){
+    if (nivelSuspeita.toLowerCase() != "baixo" && nivelSuspeita.toLowerCase() != "médio" && nivelSuspeita.toLowerCase() != "alto"){
         return res.status(404).send({
             message: "Campo de nível de suspeita não preenchido devidamente"
         });
