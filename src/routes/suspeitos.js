@@ -3,121 +3,109 @@ import { Router } from "express";
 const suspeitosRoutes = Router();
 
 let suspeitos = [
-    {
-        id: Math.floor(Math.random() * 1000000),
-        nome: "Capitã Lucimara fake",
-        partido: "PSD",
-        idade: 42,
-        segundoMandato: true, //concorrente ao segundo mandato
-        propostas: [
-            "Aumento do salário mínimo", "Redução de impostos", "Mais investimentos"
-        ],
-    },
 ];
 
-//Rota para buscar todas as emoções;
+//Rota para buscar todas os suspeitos em lista;
 suspeitosRoutes.get("/", (req, res) => {
     return res.status(200).send(suspeitos);
 });
 
-//Rota para criar uma nova Candidato
+//Rota para criar um novo suspeito
 suspeitosRoutes.post("/", (req, res) => {
-    const { nome, partido, idade, segundoMandato, propostas } = req.body;
+    const {nome, profissao, envolvimento, nivelSuspeita } = req.body;
 
-    //Validação dos campos nome e partido
-    if (!nome || !partido) {
-        return res.status(400).send({
-            message: "O nome ou o partido não foi preenchido de forma válida"
+    //Validação dos valores nome, profissão e nível de suspeita
+    if (!nome || !profissao || !nivelSuspeita) {
+        return res.status(404).send({
+            message: "Os campos de nome, profissão ou nível de suspeita não foram preenchidos."
         })
     }
-    //Validação do campo de idade
-    if (idade < 18) {
-        return res.status(400).send({
-            message: "Você é da tropa do mais novo, hein novinho? Não pode vir prefeprefe. Nananinanão"
-        })
+    //Validação do campo de nível de suspeita
+    if (nivelSuspeita !== "baixo" || nivelSuspeita !== "médio" || nivelSuspeita !== "alto"){
+        return res.status(404).send({
+            message: "Campo de nível de suspeita não preenchido devidamente"
+        });
     }
-
-    const novoCandidato = {
+    const novoSuspeito = {
         id: Math.floor(Math.random() * 1000000),
         nome,
-        partido,
-        idade,
-        segundoMandato,
-        propostas,
+        profissao,
+        envolvimento,
+        nivelSuspeita,
     };
-    suspeitos.push(novoCandidato);
+    suspeitos.push(novoSuspeito);
 
     return res.status(200).send(suspeitos);
-
-
 });
 
 suspeitosRoutes.get("/:id", (req, res) => {
     const { id } = req.params;
 
     //console.log(id);
-    const candidato = suspeitos.find((candidate) => candidate.id == id);
-    if (!candidato) {
+    const suspeito = suspeitos.find((suspect) => suspect.id == id);
+    if (!suspeito) {
         return res.status(404).send({
-            message: "candidato não encontrado",
+            message: "O ID indicado não correspoonde a nenhum suspeito",
         });
     };
 
-    return res.status(200).send({
-        message: "candidato encontrado",
-        candidato,
+    return res.status().send({
+        message: "",
+        suspeito,
     });
 });
 
 
-//rota para buscar um Candidato por seu ID
+//rota para buscar um suspeito por seu ID
 suspeitosRoutes.get("/:id", (req, res) => {
     const { id } = req.params;
 
     //console.log(id);
-    const candidato = suspeitos.find((candidato) => candidato.id == id);
-    if (!candidato) {
-        return res.status(404).send({
-            message: "Candidato não encontrado",
+    const suspeito = suspeitos.find((suspect) => suspect.id == id);
+    if (!suspeito) {
+        return res.status().send({
+            message: "",
         });
     };
 
-    return res.status(200).send({
-        message: "Candidato encontrado",
-        candidato,
+    return res.status().send({
+        message: "",
+        suspeito,
     });
 });
 
 suspeitosRoutes.put("/:id", (req, res) => {
     const { id } = req.params;
-    const candidato = suspeitos.find((emotion) => emotion.id == id);
-    if (!candidato) {
-        return res.status(404).send({
-            message: "Candidato não encontrado",
+    const suspeito = suspeitos.find((suspect) => suspect.id == id);
+    if (!suspeito) {
+        return res.status().send({
+            message: "O ID indicado não corresponde ",
         });
     };
-    const { nome, partido, idade, segundoMandato, propostas } = req.body;
-    candidato.nome = nome;
-    candidato.cor = cor;
+    const {} = req.body;
+    suspeito.nome = nome;
+    suspeito.profissao = profissao;
+    suspeito.envolvimento = envolvimento;
+    suspeito.nivelSuspeita = nivelSuspeita;
 
     return res.status(200).send({
-        message: "Candidato atualizada!", candidato,
+        message: "", suspeito,
     });
 });
 
 suspeitosRoutes.delete("/:id", (req, res) => {
     const { id } = req.params;
-    const candidato = suspeitos.find((emotion) => emotion.id == id);
-    if (!candidato) {
-        return res.status(404).send({
-            message: "Candidato não encontrado",
+    const suspeito = suspeitos.find((suspect) => suspect.id == id);
+    if (!suspeitos) {
+        return res.status().send({
+            message: "",
         });
     };
 
-    suspeitos = suspeitos.filter((emotion) => emotion.id != id);
+    suspeitos = suspeitos.filter((suspect) => suspect.id != id);
 
     return res.status(200).send({
-        message: "Candidato deletada.", candidato,
+        message: "", suspeito,
     });
 });
 
