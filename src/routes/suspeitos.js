@@ -49,8 +49,8 @@ suspeitosRoutes.get("/:id", (req, res) => {
         });
     };
 
-    return res.status().send({
-        message: "",
+    return res.status(200).send({
+        message: `O suspeito com id ${id} foi encontrado`,
         suspeito,
     });
 });
