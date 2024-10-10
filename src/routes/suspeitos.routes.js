@@ -105,14 +105,14 @@ suspeitosRoutes.delete("/:id", (req, res) => {
     const suspeito = suspeitos.find((suspect) => suspect.id == id);
     if (!suspeitos) {
         return res.status().send({
-            message: "",
+            message: "O ID indicado não corresponde a nenhum suspeito.",
         });
     };
 
     suspeitos = suspeitos.filter((suspect) => suspect.id != id);
 
     return res.status(200).send({
-        message: ":", suspeito,
+        message: "O seguinte suspeito foi deletado:", suspeito,
     });
 });
 
